@@ -1,0 +1,48 @@
+CONFIG ROUTERS
+ROUTER SANTIAGO
+ipv6 unicast-routing
+!
+int g0/0
+ ip addr 80.82.10.1 255.255.254.0
+ ipv6 address 2001:80:82:100::1/57
+ ipv6 rip RIP enable 
+ no shutdown
+!
+int g0/1
+ ip addr 80.82.12.14 255.255.255.252
+ ipv6 address 2001:80:82:300::1/57
+ ipv6 rip RIP enable 
+ no shutdown
+!
+router rip
+ version 2
+ network 80.82.0.0
+
+ROUTER VALPARAISO
+ipv6 unicast-routing
+!
+int g0/0
+ ip addr 80.82.8.1 255.255.254.0
+ ipv6 address 2001:80:82:200::1/57
+ ipv6 rip RIP enable 
+ no shutdown
+!
+int g0/1
+ ip addr 80.82.12.13 255.255.255.252
+ ipv6 address 2001:80:82:300::2/57
+ ipv6 rip RIP enable 
+ no shutdown
+!
+router rip
+ version 2
+ network 80.82.0.0
+
+
+CONFIG SWITCHES
+SWITCH SANTIAGO
+interface Vlan1
+ ip address 80.82.10.2 255.255.254.0
+
+SWITCH VALPARAISO
+interface Vlan1
+ ip address 80.82.8.2 255.255.254.0

@@ -1,0 +1,124 @@
+CONFIG ROUTERS
+ROUTER SANTIAGO
+ip dhcp excluded-address 80.82.10.1 80.82.10.10
+ip dhcp excluded-address 80.82.12.1 80.82.12.10
+ip dhcp excluded-address 80.82.14.1 80.82.14.10
+
+ip dhcp pool vozSantiago
+ network 80.82.12.0 255.255.254.0
+ default-router 80.82.12.1
+
+ip dhcp pool dataSantiago
+ network 80.82.14.0 255.255.254.0
+ default-router 80.82.14.1
+!
+int g0/0
+ ip addr 80.82.10.1 255.255.254.0
+ no shutdown
+!
+int g0/0.10
+ encapsulation dot1Q 10
+ ip addr 80.82.12.1 255.255.254.0
+ no shutdown
+!
+int g0/0.20
+ encapsulation dot1Q 20
+ ip addr 80.82.14.1 255.255.254.0
+ no shutdown
+!
+int g0/1
+ ip addr 80.82.20.14 255.255.255.252
+ no shutdown
+!
+router rip
+ version 2
+ network 80.82.0.0
+
+ROUTER VALPARAISO
+ip dhcp excluded-address 80.82.8.1 80.82.8.10
+ip dhcp excluded-address 80.82.6.1 80.82.6.10
+ip dhcp excluded-address 80.82.4.1 80.82.4.10
+
+ip dhcp pool vozSantiago
+ network 80.82.6.0 255.255.254.0
+ default-router 80.82.6.1
+
+ip dhcp pool dataSantiago
+ network 80.82.4.0 255.255.254.0
+ default-router 80.82.4.1
+!
+int g0/0
+ ip addr 80.82.8.1 255.255.254.0
+ no shutdown
+!
+int g0/0.10
+ encapsulation dot1Q 10
+ ip addr 80.82.6.1 255.255.254.0
+ no shutdown
+!
+int g0/0.20
+ encapsulation dot1Q 20
+ ip addr 80.82.4.1 255.255.254.0
+ no shutdown
+!
+int g0/1
+ ip addr 80.82.20.13 255.255.255.252
+ no shutdown
+
+router rip
+ version 2
+ network 80.82.0.0
+
+
+CONFIG SWITCHES
+SWITCH SANTIAGO
+vlan 10
+ name vozSantiago
+!
+vlan 20
+ name dataSantiago
+!
+interface Vlan1
+ ip address 80.82.10.2 255.255.254.0
+!
+interface FastEthernet0/1
+ switchport mode trunk
+!
+interface FastEthernet0/2
+ switchport access vlan 20
+!
+interface FastEthernet0/3
+ switchport access vlan 20
+!
+interface FastEthernet0/4
+ switchport voice vlan 10
+!
+interface FastEthernet0/5
+ switchport voice vlan 10
+
+
+SWITCH VALPARAISO
+vlan 10
+ name vozValparaiso
+!
+vlan 20
+ name dataValparaiso
+!
+interface Vlan1
+ ip address 80.82.8.2 255.255.254.0
+!
+interface FastEthernet0/1
+ switchport mode trunk
+!
+interface FastEthernet0/2
+ switchport access vlan 20
+!
+interface FastEthernet0/3
+ switchport access vlan 20
+!
+interface FastEthernet0/4
+ switchport voice vlan 10
+!
+interface FastEthernet0/5
+ switchport voice vlan 10
+
